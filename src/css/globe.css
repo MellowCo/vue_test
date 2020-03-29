@@ -1,9 +1,21 @@
-*{
+* {
   margin: 0;
   padding: 0;
 }
 
-#app,body,html{
+#app,
+body,
+html {
   width: 100%;
   height: 100%;
+}
+
+.el-breadcrumb {
+  margin-bottom: 20px;
+}
+
+/* 设置表格 */
+.el-table {
+  margin-top: 15px;
+  font-size: 12px;
 }
