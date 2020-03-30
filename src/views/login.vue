@@ -30,52 +30,49 @@ export default {
     return {
       // 返回表单数据
       loginform: {
-        username: "admin",
-        password: "123456"
+        username: 'admin',
+        password: '123456'
       },
       loginrules: {
         username: [
-          { required: true, message: "用户名", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          { required: true, message: '用户名', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: "密码", trigger: "blur" },
-          { min: 5, max: 15, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          { required: true, message: '密码', trigger: 'blur' },
+          { min: 5, max: 15, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ]
       }
-    };
+    }
   },
   methods: {
     rest() {
-      console.log(this.$data);
-      this.$refs.form.resetFields();
+      console.log(this.$data)
+      this.$refs.form.resetFields()
     },
     login() {
       this.$refs.form.validate(async valid => {
         //验证不通过
-        if (!valid) return;
+        if (!valid) return
 
         // const res = await this.$axios.post("login", this.loginform);
         // const resdata = res.data;
         //两种写法相同
-        const { data: resdata } = await this.$axios.post(
-          "login",
-          this.loginform
-        );
-        console.log(resdata);
-        if (resdata.meta.status != 200) return this.$message.error("登录失败");
-        this.$message.success("登录成功");
+        const { data: resdata } = await this.$axios.post('login', this.loginform)
+        console.log(resdata)
+        if (resdata.meta.status != 200) return this.$message.error('登录失败')
+        this.$message.success('登录成功')
 
         // 1. 将登录成功之后的 token，保存到客户端的 sessionStorage 中
         //   1.1 项目中出了登录之外的其他API接口，必须在登录之后才能访问
         //   1.2 token 只应在当前网站打开期间生效，所以将 token 保存在 sessionStorage 中
-        window.sessionStorage.setItem("token", resdata.data.token);
+        window.sessionStorage.setItem('token', resdata.data.token)
         //通过编程式导航跳转到后台主页，路由地址是 /home
-        this.$router.push("/home");
-      });
+        this.$router.push('/home')
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

@@ -117,152 +117,149 @@ export default {
     // 验证邮箱
     var checkEmail = (rule, value, callback) => {
       //邮箱的正则表达式
-      const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+      const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
 
       if (regEmail.test(value)) {
-        return callback();
+        return callback()
       }
-      callback(new Error("请输入正确的邮箱！"));
-    };
+      callback(new Error('请输入正确的邮箱！'))
+    }
 
     // 验证手机号
     var checkMobile = (rule, value, callback) => {
       //手机号的正则表达式
-      const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+      const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
 
       if (regMobile.test(value)) {
-        return callback();
+        return callback()
       }
-      callback(new Error("请输入正确的手机号！"));
-    };
+      callback(new Error('请输入正确的手机号！'))
+    }
 
     return {
-      userinfo: { query: "", pagenum: 1, pagesize: 2 },
+      userinfo: { query: '', pagenum: 1, pagesize: 2 },
       userList: [],
       total: 0,
       // 隐藏对话框
       dialogVisible: false,
       // 添加表单的数据
       addForm: {
-        username: "",
-        password: "",
-        email: "",
-        mobile: ""
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
       },
       //添加表单的校验规则
       addFormRules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
         ],
         email: [
-          { required: true, message: "请输入邮箱", trigger: "blur" },
-          { validator: checkEmail, trigger: "blur" }
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { validator: checkEmail, trigger: 'blur' }
         ],
         mobile: [
-          { required: true, message: "请输入手机号", trigger: "blur" },
-          { validator: checkMobile, trigger: "blur" }
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { validator: checkMobile, trigger: 'blur' }
         ]
       }
-    };
+    }
   },
   methods: {
     async getUserList() {
-      const { data: res } = await this.$axios.get("/users", {
+      const { data: res } = await this.$axios.get('/users', {
         params: this.userinfo
-      });
-      if (res.meta.status != 200) return this.$message.error("错误");
-      this.userList = res.data.users;
-      this.total = res.data.total;
+      })
+      if (res.meta.status != 200) return this.$message.error('错误')
+      this.userList = res.data.users
+      this.total = res.data.total
       // console.log(res.data);
       // console.log(this.userList);
     },
     // 页面大小
     handleSizeChange(size) {
-      this.userinfo.pagesize = size;
+      this.userinfo.pagesize = size
       //重新获取请求
-      this.getUserList();
+      this.getUserList()
     },
     handleCurrentChange(curPage) {
-      this.userinfo.pagenum = curPage;
+      this.userinfo.pagenum = curPage
       //重新获取请求
-      this.getUserList();
+      this.getUserList()
     },
     // 更改用户状态
     async changeStatus(info) {
-      console.log(info);
-      const { data: res } = await this.$axios.put(
-        `users/${info.id}/state2/${info.mg_state}`
-      );
+      console.log(info)
+      const { data: res } = await this.$axios.put(`users/${info.id}/state2/${info.mg_state}`)
       if (res.meta.status != 200) {
         //设置失败
-        info.mg_state = !info.mg_state;
-        return this.$message.error("设置失败");
+        info.mg_state = !info.mg_state
+        return this.$message.error('设置失败')
       }
-      this.$message.success("设置成功");
+      this.$message.success('设置成功')
     },
     // 关闭对话框 重置表单
     closeDialog() {
       //获取表单对象并重置
-      this.$refs.addFormRef.resetFields();
+      this.$refs.addFormRef.resetFields()
     },
     //验证提交表单
     addUser() {
       this.$refs.addFormRef.validate(async valid => {
-        if (!valid) return;
+        if (!valid) return
         //发送添加请求
-        const { data: res } = await this.$axios.post("/users", this.addForm);
+        const { data: res } = await this.$axios.post('/users', this.addForm)
 
-        console.log(res);
+        console.log(res)
 
-        if (res.meta.status != 201) return this.$message.error("添加失败");
+        if (res.meta.status != 201) return this.$message.error('添加失败')
 
-        this.$message.success("添加成功");
-        this.dialogVisible = false;
+        this.$message.success('添加成功')
+        this.dialogVisible = false
         //重新获取 所有用户
-        this.getUserList();
-      });
+        this.getUserList()
+      })
     },
     //删除用户
     delUser(id) {
-      this.$confirm("是否删除用户?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('是否删除用户?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
           this.$axios
-            .delete("/users/" + id)
+            .delete('/users/' + id)
             .then(res => {
               // console.log(res);
 
-              if (res.data.meta.status != 200)
-                return this.$message.error("删除失败");
+              if (res.data.meta.status != 200) return this.$message.error('删除失败')
               this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
+                type: 'success',
+                message: '删除成功!'
+              })
             })
             .catch(err => {
-              console.log("url 不对");
-              console.error(err);
-            });
+              console.log('url 不对')
+              console.error(err)
+            })
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     }
   },
 
   created() {
-    this.getUserList();
+    this.getUserList()
   }
-};
+}
 </script>

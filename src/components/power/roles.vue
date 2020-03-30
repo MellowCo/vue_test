@@ -116,87 +116,79 @@ export default {
       rightsList: [],
       // 指定子节点
       rightsProps: {
-        label: "authName",
-        children: "children"
+        label: 'authName',
+        children: 'children'
       },
       //默认选中的节点
       defRights: [],
       //分配 权限的id
-      roleId: ""
-    };
+      roleId: ''
+    }
   },
   methods: {
     // 获取角色列表
     async getUserList() {
-      const { data: res } = await this.$axios.get("roles");
+      const { data: res } = await this.$axios.get('roles')
 
-      if (res.meta.status != 200)
-        return this.$message.error("请求角色列表失败");
+      if (res.meta.status != 200) return this.$message.error('请求角色列表失败')
 
-      this.rolesList = res.data;
-      this.$message.success("请求角色列表成功");
+      this.rolesList = res.data
+      this.$message.success('请求角色列表成功')
     },
     // 打开弹窗
     openDialog(role) {
       //将分配权限的uid
-      this.roleId = role.id;
+      this.roleId = role.id
       //获取权限列表
-      this.getRightsList();
+      this.getRightsList()
       //获取默认选中的权限
-      this.getRights(role, this.defRights);
-      this.dialogVisible = true;
+      this.getRights(role, this.defRights)
+      this.dialogVisible = true
     },
     //获取权限列表
     async getRightsList() {
-      const { data: res } = await this.$axios.get("rights/tree");
-      if (res.meta.status != 200)
-        return this.$message.error("请求权限列表失败");
+      const { data: res } = await this.$axios.get('rights/tree')
+      if (res.meta.status != 200) return this.$message.error('请求权限列表失败')
       // console.log(res);
 
-      this.rightsList = res.data;
-      this.$message.success("请求权限列表成功");
+      this.rightsList = res.data
+      this.$message.success('请求权限列表成功')
     },
     //递归获取权限
     getRights(role, arr) {
-      if (!role.children) return arr.push(role.id);
+      if (!role.children) return arr.push(role.id)
 
-      role.children.forEach(item => this.getRights(item, arr));
+      role.children.forEach(item => this.getRights(item, arr))
     },
     //关闭弹窗 清理默认权限数组
     closeDialog() {
-      this.defRights = [];
+      this.defRights = []
     },
     //修改权限
     async setRights() {
       //先获取选中的id
-      const key = [
-        ...this.$refs.rightsTreeRef.getCheckedKeys(),
-        ...this.$refs.rightsTreeRef.getHalfCheckedKeys()
-      ];
+      const key = [...this.$refs.rightsTreeRef.getCheckedKeys(), ...this.$refs.rightsTreeRef.getHalfCheckedKeys()]
 
       //将数组通过 , 拼接
-      const idStr = key.join(",");
+      const idStr = key.join(',')
 
       //发送请求
       //roleId 在打开弹窗时 以赋值
-      const { data: res } = await this.$axios.post(
-        `roles/${this.roleId}/rights`,
-        {
-          rids: idStr
-        }
-      );
+      const { data: res } = await this.$axios.post(`roles/${this.roleId}/rights`, {
+        rids: idStr
+      })
 
       if (res.meta.status !== 200) {
-        return this.$message.error("分配权限失败！");
+        return this.$message.error('分配权限失败！')
       }
 
-      this.$message.success("分配权限成功！");
-      this.getUserList();
-      this.dialogVisible = false;
+      this.$message.success('分配权限成功！')
+      this.getUserList()
+      this.dialogVisible = false
     }
   },
   created() {
-    this.getUserList();
+    this.getUserList()
   }
-};
+}
 </script>

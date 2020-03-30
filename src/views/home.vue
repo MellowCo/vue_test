@@ -57,11 +57,11 @@ export default {
       menulist: [],
       // 是否折叠
       isCollapse: false
-    };
+    }
   },
   // 在vue渲染页面时 调用方法
   created() {
-    this.getMenuList();
+    this.getMenuList()
     // console.log(this.$route.path);
     // console.log(this.$router);
     // console.log(this.$route);
@@ -69,23 +69,23 @@ export default {
   methods: {
     logout() {
       // 清除本地的token
-      window.sessionStorage.clear();
+      window.sessionStorage.clear()
       //跳转到login
-      this.$router.push("/login");
+      this.$router.push('/login')
     },
     // 获取菜单栏
     async getMenuList() {
-      const { data: res } = await this.$axios.get("/menus");
+      const { data: res } = await this.$axios.get('/menus')
       // console.log(res);
-      if (res.meta.status != 200) return this.$message.error("失败");
+      if (res.meta.status != 200) return this.$message.error('失败')
 
-      this.menulist = res.data;
+      this.menulist = res.data
     },
     toggleCollapse() {
-      this.isCollapse = !this.isCollapse;
+      this.isCollapse = !this.isCollapse
     }
   }
-};
+}
 </script>
 
 <style lang="less" scope>

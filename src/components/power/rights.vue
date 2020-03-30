@@ -34,22 +34,21 @@ export default {
   data() {
     return {
       rightsList: []
-    };
+    }
   },
   methods: {
     // 获取权限列表
     async getUserList() {
-      const { data: res } = await this.$axios.get("/rights/list");
+      const { data: res } = await this.$axios.get('/rights/list')
 
-      if (res.meta.status != 200)
-        return this.$message.error("请求权限列表失败");
+      if (res.meta.status != 200) return this.$message.error('请求权限列表失败')
 
-      this.rightsList = res.data;
-      this.$message.success("请求权限列表成功");
+      this.rightsList = res.data
+      this.$message.success('请求权限列表成功')
     }
   },
   created() {
-    this.getUserList();
+    this.getUserList()
   }
-};
+}
 </script>
